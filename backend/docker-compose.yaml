@@ -1,0 +1,49 @@
+name: medibuddy
+services:
+  identity:
+    image: 'eclipse-temurin:21-jdk-alpine'
+    depends_on:
+      - postgres
+    expose:
+      - 9000
+    ports:
+      - '9000:9000'
+    working_dir: /medibuddy/identity
+    volumes:
+      - ./identity/target:/medibuddy/identity
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+    command: ["java", "-jar", "identity-0.0.1-SNAPSHOT.jar"]
+
+  webapi:
+    image: 'eclipse-temurin:21-jdk-alpine'
+    depends_on:
+      - postgres
+    expose:
+      - 8080
+    ports:
+      - '8080:8080'
+    working_dir: /medibuddy/webapi
+    volumes:
+      - ./webapi/target:/medibuddy/webapi
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+    command: ["java", "-jar", "webapi-0.0.1-SNAPSHOT.jar"]
+
+  postgres:
+    image: 'postgres:latest'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: medibuddy_prod_db
+      POSTGRES_USER: medibuddy_usr
+      POSTGRES_PASSWORD: medibuddy_pwd
+    ports:
+      - '5432:5432'
+
+volumes:
+  pgdata:
