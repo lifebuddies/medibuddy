@@ -1,10 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:medibuddy/assets/screens/sign_in.dart';
 import 'package:medibuddy/widgets/intro_button.dart';
 import 'package:medibuddy/widgets/intro_indicator.dart';
 
 class IntroNavigatorBar extends StatelessWidget {
-  const IntroNavigatorBar({super.key, required this.controller, required this.isLastPage});
+  const IntroNavigatorBar({
+    super.key,
+    required this.controller,
+    required this.isLastPage,
+  });
   final PageController controller;
   final bool isLastPage;
 
@@ -37,11 +41,11 @@ class IntroNavigatorBar extends StatelessWidget {
             isLastPage
                 ? IntroButton(
                   controller: controller,
-                  text: "Done",
+                  text: "Sign In",
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => const SignIn()),
+                      CupertinoPageRoute(builder: (context) => const SignIn()),
                     );
                   },
                 )

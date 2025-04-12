@@ -9,7 +9,7 @@ class IntroIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return SmoothPageIndicator(
       controller: controller,
-      count: 3,
+      count: 2,
       effect: const WormEffect(
         activeDotColor: Color.fromARGB(225, 26, 95, 183),
         dotHeight: 10,
