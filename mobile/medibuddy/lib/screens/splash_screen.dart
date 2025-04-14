@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medibuddy/assets/screens/intro_screen.dart';
+import 'package:medibuddy/screens/intro_screen.dart';
 import 'package:medibuddy/widgets/animated_splashScreen_appName.dart';
 import 'package:medibuddy/widgets/animated_splashScreen_robot.dart';
 

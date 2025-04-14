@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:medibuddy/assets/screens/sign_in.dart';
+import 'package:medibuddy/screens/register.dart';
 import 'package:medibuddy/widgets/intro_button.dart';
 import 'package:medibuddy/widgets/intro_indicator.dart';
 
@@ -41,11 +41,11 @@ class IntroNavigatorBar extends StatelessWidget {
             isLastPage
                 ? IntroButton(
                   controller: controller,
-                  text: "Sign In",
+                  text: "Register",
                   onPressed: () {
                     Navigator.pushReplacement(
                       context,
-                      CupertinoPageRoute(builder: (context) => const SignIn()),
+                      CupertinoPageRoute(builder: (context) => const Register()),
                     );
                   },
                 )

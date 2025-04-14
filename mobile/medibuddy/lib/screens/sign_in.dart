@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:medibuddy/assets/screens/register.dart';
+import 'package:medibuddy/screens/register.dart';
 import 'package:medibuddy/widgets/custom_checkAcount_row.dart';
 import 'package:medibuddy/widgets/custom_elevated_page_button.dart';
 import 'package:medibuddy/widgets/custom_textField.dart';

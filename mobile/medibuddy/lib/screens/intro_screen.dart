@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:medibuddy/assets/screens/intro_1.dart';
-import 'package:medibuddy/assets/screens/intro_2.dart';
+import 'package:medibuddy/screens/intro_1.dart';
+import 'package:medibuddy/screens/intro_2.dart';
 import 'package:medibuddy/widgets/intro_navigator_bar.dart';
 
 // ignore: must_be_immutable

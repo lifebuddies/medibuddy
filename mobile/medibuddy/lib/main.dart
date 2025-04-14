@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:medibuddy/assets/screens/splash_screen.dart';
+import 'package:medibuddy/screens/splash_screen.dart';
 
 void main() {
   runApp(
