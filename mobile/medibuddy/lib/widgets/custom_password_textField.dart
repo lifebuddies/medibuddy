@@ -37,6 +37,7 @@ class _CustomPasswordTextfieldState extends State<CustomPasswordTextfield> {
               Colors.white,
               Colors.white,
               Colors.white,
+              Color.fromARGB(224, 18, 66, 129),
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,

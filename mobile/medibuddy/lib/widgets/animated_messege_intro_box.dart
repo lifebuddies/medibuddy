@@ -17,9 +17,12 @@ class _AnimatedMessegeIntroBoxState extends State<AnimatedMessegeIntroBox> {
   void initState() {
     super.initState();
     Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        _animate = true;
-      });
+      if (mounted) {
+        // تأكد من أن الودجت لا يزال موجودًا قبل تحديث الحالة
+        setState(() {
+          _animate = true;
+        });
+      }
     });
   }
 

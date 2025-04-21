@@ -1,18 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:medibuddy/consts.dart';
+import 'package:medibuddy/screens/app_home_screen.dart';
 import 'package:medibuddy/widgets/choosing_image_avatar_button.dart';
 import 'package:medibuddy/widgets/custom_checkAcount_row.dart';
 import 'package:medibuddy/widgets/custom_elevated_page_button.dart';
 import 'package:medibuddy/widgets/custom_password_textField.dart';
 import 'package:medibuddy/widgets/custom_textField.dart';
 
-class Register extends StatefulWidget {
+class Register extends StatelessWidget {
   const Register({super.key});
 
-  @override
-  State<Register> createState() => _RegisterState();
-}
-
-class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,15 +18,19 @@ class _RegisterState extends State<Register> {
         children: [
           // الخلفية
           Positioned.fill(
-            child: Image.asset('lib/assets/images/3.png', fit: BoxFit.cover),
+            child: Image.asset(
+              'lib/assets/images/$themeColor/RegisterationBackGround.png',
+              fit: BoxFit.cover,
+            ),
           ),
           Center(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height: 100),
-                  ChoosingImageAvatarButton(), // زر اختيار صورة البروفايل
-                  // صورة البروفايل واختياراتها
+                  const SizedBox(height: 20),
+
+                  const SizedBox(height: 20),
+                  const ChoosingImageAvatarButton(),
                   const SizedBox(height: 30),
                   CustomTextfield(
                     hintText: 'Name',
@@ -36,14 +38,12 @@ class _RegisterState extends State<Register> {
                     keyboardType: TextInputType.name,
                   ),
                   const SizedBox(height: 15),
-
                   CustomTextfield(
                     hintText: 'Phone Number',
                     icon: Icons.phone,
                     keyboardType: TextInputType.phone,
                   ),
                   const SizedBox(height: 15),
-
                   CustomTextfield(
                     hintText: 'Email',
                     icon: Icons.email,
@@ -52,12 +52,23 @@ class _RegisterState extends State<Register> {
                   const SizedBox(height: 15),
                   CustomPasswordTextfield(labelText: 'Password'),
                   const SizedBox(height: 15),
-
                   CustomPasswordTextfield(labelText: 'Confirm Password'),
                   const SizedBox(height: 40),
-                  CustomElevatedPageButton(title: 'Sign Up', onPressed: () {}),
+                  CustomElevatedPageButton(
+                    title: 'Sign Up',
+                    onPressed: () {
+                      // sign up action
+
+                      Navigator.pushReplacement(
+                        context,
+                        CupertinoPageRoute(
+                          builder: (context) => AppHomeScreen(),
+                        ),
+                      );
+                    },
+                  ),
                   const SizedBox(height: 20),
-                  Divider(
+                  const Divider(
                     color: Colors.white,
                     thickness: 1,
                     indent: 20,
@@ -68,7 +79,7 @@ class _RegisterState extends State<Register> {
                     question: "Already have an account ?",
                     option: "Sign In",
                     onpressed: () {
-                      //هنعمل هنا ري دايركت ع صفحه الويب ع طول
+                      Navigator.pushNamed(context, "/login");
                     },
                   ),
                 ],

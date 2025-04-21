@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 class AnimatedLetsgoMesseage  extends StatelessWidget {
   const AnimatedLetsgoMesseage ({super.key, required this.animate});
@@ -38,7 +38,7 @@ class AnimatedLetsgoMesseage  extends StatelessWidget {
                       color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      fontFamily: GoogleFonts.merriweather().fontFamily,
+                      // fontFamily: GoogleFonts.merriweather().fontFamily,
                     ),
                   ),
                 ),

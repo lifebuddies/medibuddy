@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AnimatedRobotIntro_1_2 extends StatefulWidget {
-  const AnimatedRobotIntro_1_2({
-    super.key,
-    required this.robotImage,
-  });
+  const AnimatedRobotIntro_1_2({super.key, required this.robotImage});
   final String robotImage;
 
   @override
@@ -18,9 +15,12 @@ class _AnimatedRobotIntroState extends State<AnimatedRobotIntro_1_2> {
   void initState() {
     super.initState();
     Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        _animate = true;
-      });
+      if (mounted) {
+        // تأكد من أن الودجت لا يزال موجودًا قبل تحديث الحالة
+        setState(() {
+          _animate = true;
+        });
+      }
     });
   }
 

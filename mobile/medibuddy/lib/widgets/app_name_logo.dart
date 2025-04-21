@@ -5,6 +5,6 @@ class AppNameLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Image(image: AssetImage('lib/assets/images/7.png'));
+    return  Image(image: AssetImage('lib/assets/images/Logo.png'));
   }
 }

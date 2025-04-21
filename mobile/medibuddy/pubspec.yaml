@@ -37,7 +37,17 @@ dependencies:
   smooth_page_indicator: ^1.2.1
   google_fonts: ^6.2.1
   image_picker: ^1.0.4
+  bloc: ^9.0.0
+  flutter_bloc: ^9.1.0
+  carousel_slider: ^5.0.0
+  flutter_zoom_drawer: ^3.2.0
+  awesome_drawer_bar: ^1.2.1
+  flutter_advanced_drawer: ^1.4.0
+  flutter_launcher_icons: ^0.14.3
 
+flutter_icons: 
+  android: true 
+  image_path: "lib/assets/images/robot_2.png"
 
 dev_dependencies:
   flutter_test:
@@ -64,7 +74,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - lib/assets/images/
-  #   - images/a_dot_ham.jpeg
+    - lib/assets/images/BlueTheme/
+    - lib/assets/images/PinkTheme/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

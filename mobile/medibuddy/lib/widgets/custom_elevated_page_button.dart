@@ -3,9 +3,15 @@ import 'package:google_fonts/google_fonts.dart';
 
 // ignore: must_be_immutable
 class CustomElevatedPageButton extends StatelessWidget {
-  CustomElevatedPageButton({this.onPressed, super.key, required this.title});
+  CustomElevatedPageButton({
+    this.onPressed,
+    super.key,
+    required this.title,
+    // required this.color,
+  });
   final String title;
   VoidCallback? onPressed;
+  // final Color color;
 
   @override
   Widget build(BuildContext context) {

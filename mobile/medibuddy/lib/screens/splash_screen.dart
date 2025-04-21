@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:medibuddy/consts.dart';
 import 'package:medibuddy/screens/intro_screen.dart';
 import 'package:medibuddy/widgets/animated_splashScreen_appName.dart';
 import 'package:medibuddy/widgets/animated_splashScreen_robot.dart';
@@ -37,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           // الخلفية
           SizedBox.expand(
-            child: Image.asset("lib/assets/images/1.png", fit: BoxFit.cover),
+            child: Image.asset("lib/assets/images/$themeColor/SplashBackGround.png", fit: BoxFit.cover),
           ),
           // اسم التطبيق
           AnimatedSplashscreenAppname(animate: _animate),
