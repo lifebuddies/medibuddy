@@ -1,4 +1,4 @@
-package com.medibuddy.identity.entities;
+package com.medibuddy.identity.entity;
 
 import jakarta.persistence.*;
 
