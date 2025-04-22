@@ -1,3 +1,26 @@
 spring:
   application:
     name: identity
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+      authorizationserver:
+        jwt:
+          key-id: 'medibuddy-key-62542850-d183-4710-b1df-329f180fd2dc'
+          public-key-location: classpath:medibuddy-public.pem
+          private-key-location: classpath:medibuddy-private.pem
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: ${AUTHORIZATION_SERVER_PORT}
+  address: ${AUTHORIZATION_SERVER_ADDRESS}
