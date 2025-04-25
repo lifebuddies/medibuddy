@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:medibuddy/screens/register.dart';
 import 'package:medibuddy/widgets/intro_button.dart';
@@ -25,7 +26,7 @@ class IntroNavigatorBar extends StatelessWidget {
           children: [
             IntroButton(
               controller: controller,
-              text: "Prev",
+              text: "prev".tr(),
               onPressed: () {
                 controller.previousPage(
                   duration: Duration(milliseconds: 300),
@@ -41,7 +42,7 @@ class IntroNavigatorBar extends StatelessWidget {
             isLastPage
                 ? IntroButton(
                   controller: controller,
-                  text: "Register",
+                  text: "register".tr(),
                   onPressed: () {
                     ///// حاجه جديده علشان احدد اتجاه النافيجيت
                     Navigator.push(
@@ -79,7 +80,7 @@ class IntroNavigatorBar extends StatelessWidget {
                 )
                 : IntroButton(
                   controller: controller,
-                  text: "Next",
+                  text: "next".tr(),
                   onPressed: () {
                     controller.nextPage(
                       duration: Duration(milliseconds: 300),

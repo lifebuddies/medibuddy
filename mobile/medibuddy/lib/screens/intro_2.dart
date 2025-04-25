@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medibuddy/consts.dart';
 import 'package:medibuddy/widgets/animated_buble.dart';
@@ -46,7 +47,7 @@ class Intro2 extends StatelessWidget {
           ),
           AnimatedMessegeIntroBox(
             messege:
-                "Let's start your journey to a healthier you! \n\nI will be your guider through every step of the way.",
+                "message_intro_2".tr(), // الرسالة المتحركة
           ),
 
           // الروبوت اللي يدور تدريجيًا

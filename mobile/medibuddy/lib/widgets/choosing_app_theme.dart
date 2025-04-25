@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medibuddy/consts.dart';
@@ -13,9 +14,9 @@ class ChoosingAppTheme extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Select Theme :",
+          "select_theme_:".tr(),
           style: TextStyle(
-            color: Colors.black,
+            color: textBlackColor,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
@@ -25,15 +26,21 @@ class ChoosingAppTheme extends StatelessWidget {
           padding: const EdgeInsets.only(left: 20),
           child: SizedBox(
             height: 50,
-            width: 200,
+            width: 150,
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 IconButton(
                   onPressed: () {
                     themeColor = context.read<ThemeCubit>().changTheme(
                       "BlueTheme",
                     );
+                    currentThemeColor = Color.fromARGB(225, 26, 95, 183);
+                    textWhiteColor = Colors.white;
+                    textBlackColor = Colors.black87;
+                    currentTextColor = currentThemeColor;
+                    currentDrawerColor = Colors.blue.shade900;
+                    currentDividerColor = currentThemeColor;
                   },
                   icon: Icon(
                     Icons.circle,
@@ -46,6 +53,12 @@ class ChoosingAppTheme extends StatelessWidget {
                     themeColor = context.read<ThemeCubit>().changTheme(
                       "PinkTheme",
                     );
+                    currentThemeColor = Color.fromARGB(225, 229, 53, 97);
+                    textWhiteColor = Colors.white;
+                    textBlackColor = Colors.black87;
+                    currentTextColor = currentThemeColor;
+                    currentDrawerColor = Colors.pink.shade900;
+                    currentDividerColor = currentThemeColor;
                   },
                   icon: Icon(Icons.circle, color: Colors.pink, size: 30),
                 ),
@@ -54,6 +67,12 @@ class ChoosingAppTheme extends StatelessWidget {
                     themeColor = context.read<ThemeCubit>().changTheme(
                       "GreenTheme",
                     );
+                    currentThemeColor = Color.fromARGB(225, 0, 96, 81);
+                    textWhiteColor = Colors.white;
+                    textBlackColor = Colors.black87;
+                    currentTextColor = currentThemeColor;
+                    currentDrawerColor = currentThemeColor;
+                    currentDividerColor = currentThemeColor;
                   },
                   icon: Icon(
                     Icons.circle,

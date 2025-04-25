@@ -72,6 +72,7 @@
 //     );
 //   }
 // }
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medibuddy/consts.dart';
 import 'package:medibuddy/widgets/app_name_logo.dart';
@@ -138,29 +139,19 @@ class _MainAppScreenState extends State<MainAppScreen> {
                     child: PageView(
                       controller: _pageController,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: MessageCard(
-                            text:
-                                "Hi! I'm Sanjo, I'm here to help you reach a healthy life style",
-                            imagePath: 'lib/assets/images/robot_1.png',
-                          ),
+                        MessageCard(
+                          text:
+                              "message_card_1".tr(), // استخدم الترجمة هنا
+                          imagePath: 'lib/assets/images/robot_1.png',
                         ),
 
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: MessageCard(
-                            text: "Don't forget to drink water regularly!",
-                            imagePath: 'lib/assets/images/robot_2.png',
-                          ),
+                        MessageCard(
+                          text: "message_caed_2".tr(),
+                          imagePath: 'lib/assets/images/robot_2.png',
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: MessageCard(
-                            text:
-                                "Time to get moving, let's do some stretches!",
-                            imagePath: 'lib/assets/images/robot_3.png',
-                          ),
+                        MessageCard(
+                          text: "message_card_3".tr(),
+                          imagePath: 'lib/assets/images/robot_3.png',
                         ),
                       ],
                     ),
@@ -170,8 +161,8 @@ class _MainAppScreenState extends State<MainAppScreen> {
                   SmoothPageIndicator(
                     controller: _pageController,
                     count: 3,
-                    effect: const ExpandingDotsEffect(
-                      activeDotColor: Colors.blue,
+                    effect: ExpandingDotsEffect(
+                      activeDotColor: currentThemeColor,
                       dotColor: Colors.white54,
                       dotHeight: 8,
                       dotWidth: 5,

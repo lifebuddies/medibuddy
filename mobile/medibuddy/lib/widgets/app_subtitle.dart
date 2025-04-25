@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -10,7 +11,7 @@ class AppSubtitle extends StatelessWidget {
       height: 103,
       width: 240,
       child: Text(
-        "Your AI Friend For Better Lifestyle",
+        "app_subtitle".tr(),
         maxLines: 2,
         textAlign: TextAlign.center,
         style: TextStyle(

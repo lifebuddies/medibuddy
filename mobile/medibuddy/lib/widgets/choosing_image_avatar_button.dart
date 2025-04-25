@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ChoosingImageAvatarButton extends StatefulWidget {
-  const ChoosingImageAvatarButton({super.key});
+  const ChoosingImageAvatarButton({super.key, required this.radius});
+  final double radius;
 
   @override
   State<ChoosingImageAvatarButton> createState() => _MyWidgetState();
@@ -25,19 +27,21 @@ class _MyWidgetState extends State<ChoosingImageAvatarButton> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
+    return IconButton(
+      iconSize: widget.radius * 2,
+
       onPressed: () {
         showDialog(
           context: context,
           builder:
               (context) => AlertDialog(
-                title: const Text('Select Image'),
+                title: const Text('select_image').tr(),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ListTile(
                       leading: const Icon(Icons.camera_alt_outlined),
-                      title: const Text('Camera'),
+                      title: const Text('camera').tr(),
                       onTap: () {
                         _pickImage(ImageSource.camera);
                         Navigator.pop(context);
@@ -45,7 +49,7 @@ class _MyWidgetState extends State<ChoosingImageAvatarButton> {
                     ),
                     ListTile(
                       leading: const Icon(Icons.photo),
-                      title: const Text('Gallery'),
+                      title: const Text('gallery').tr(),
                       onTap: () {
                         _pickImage(ImageSource.gallery);
                         Navigator.pop(context);
@@ -56,8 +60,8 @@ class _MyWidgetState extends State<ChoosingImageAvatarButton> {
               ),
         );
       },
-      child: CircleAvatar(
-        radius: 60,
+      icon: CircleAvatar(
+        radius: widget.radius,
         backgroundImage:
             _pickedImage != null
                 ? FileImage(_pickedImage!)

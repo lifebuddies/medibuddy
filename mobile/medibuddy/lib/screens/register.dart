@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:medibuddy/consts.dart';
@@ -30,32 +31,49 @@ class Register extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   const SizedBox(height: 20),
-                  const ChoosingImageAvatarButton(),
+                  TextButton(
+                    onPressed: () {
+                      final currentLocale = context.locale;
+                      if (currentLocale.languageCode == 'en') {
+                        context.setLocale(const Locale('ar'));
+                      } else {
+                        context.setLocale(const Locale('en'));
+                      }
+                    },
+                    child: Text(
+                      context.locale.languageCode == 'en'
+                          ? 'العربية'
+                          : 'English',
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+
+                  const ChoosingImageAvatarButton(radius: 60),
                   const SizedBox(height: 30),
                   CustomTextfield(
-                    hintText: 'Name',
+                    hintText: 'name'.tr(),
                     icon: Icons.person,
                     keyboardType: TextInputType.name,
                   ),
                   const SizedBox(height: 15),
                   CustomTextfield(
-                    hintText: 'Phone Number',
+                    hintText: 'phone_number'.tr(),
                     icon: Icons.phone,
                     keyboardType: TextInputType.phone,
                   ),
                   const SizedBox(height: 15),
                   CustomTextfield(
-                    hintText: 'Email',
+                    hintText: 'email'.tr(),
                     icon: Icons.email,
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 15),
-                  CustomPasswordTextfield(labelText: 'Password'),
+                  CustomPasswordTextfield(labelText: 'password'.tr()),
                   const SizedBox(height: 15),
-                  CustomPasswordTextfield(labelText: 'Confirm Password'),
+                  CustomPasswordTextfield(labelText: 'confirm_password'.tr()),
                   const SizedBox(height: 40),
                   CustomElevatedPageButton(
-                    title: 'Sign Up',
+                    title: 'register'.tr(),
                     onPressed: () {
                       // sign up action
 
@@ -76,10 +94,10 @@ class Register extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   CustomCheckacountRow(
-                    question: "Already have an account ?",
-                    option: "Sign In",
+                    question: "allready_have_account".tr(),
+                    option: "login".tr(),
                     onpressed: () {
-                      Navigator.pushNamed(context, "/login");
+                      // هنا ال دايركت لينك
                     },
                   ),
                 ],

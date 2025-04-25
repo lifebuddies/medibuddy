@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:medibuddy/consts.dart';
 import 'package:medibuddy/screens/main_app_screen.dart';
 import 'package:medibuddy/screens/profile_screen.dart';
+import 'package:medibuddy/screens/setting_screen.dart';
 import 'package:medibuddy/screens/tes_theme_screen.dart';
 import 'package:medibuddy/widgets/drawer_item.dart';
 
@@ -115,7 +118,7 @@ class DrawerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue.shade900,
+      backgroundColor: currentDrawerColor,
       body: Container(
         padding: const EdgeInsets.only(top: 60, left: 20, right: 20),
         child: Column(
@@ -127,8 +130,8 @@ class DrawerScreen extends StatelessWidget {
               radius: 100,
             ),
             const SizedBox(height: 20),
-            const Text(
-              'Mohamed Ghoniem',
+            Text(
+              'mohmmed_ayman'.tr(),
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 22,
@@ -141,25 +144,25 @@ class DrawerScreen extends StatelessWidget {
 
             DrawerItem(
               icon: Icons.home,
-              title: 'Home',
+              title: 'home'.tr(),
               onPressed: () => onItemSelected(const MainAppScreen()),
             ),
             const SizedBox(height: 5),
             DrawerItem(
               icon: Icons.person,
-              title: 'Profile',
+              title: 'profile'.tr(),
               onPressed: () => onItemSelected(const ProfileScreen()),
             ),
             const SizedBox(height: 5),
             DrawerItem(
               icon: Icons.settings,
-              title: 'Settings',
-              onPressed: () => onItemSelected(const TesThemeScreen()),
+              title: 'settings'.tr(),
+              onPressed: () => onItemSelected(const SettingScreen()),
             ),
             const SizedBox(height: 5),
             DrawerItem(
               icon: Icons.local_pharmacy_rounded,
-              title: 'New plan',
+              title: 'new_plan'.tr(),
               onPressed: () => onItemSelected(const TesThemeScreen()),
             ),
           ],

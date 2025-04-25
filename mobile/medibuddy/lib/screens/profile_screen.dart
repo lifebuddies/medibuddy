@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:medibuddy/consts.dart';
-import 'package:medibuddy/cubit/theme_cubit.dart';
 import 'package:medibuddy/screens/app_home_screen.dart';
 import 'package:medibuddy/widgets/drawer_button.dart';
-import 'package:medibuddy/widgets/user_details.dart'; // تأكد من المسار الصحيح للصفحة الرئيسية
+import 'package:medibuddy/widgets/user_details.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:medibuddy/cubit/theme_cubit.dart'; // تأكد من المسار الصحيح للصفحة الرئيسية
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -58,6 +59,7 @@ class ProfileScreen extends StatelessWidget {
               (Route<dynamic> route) => false, // عشان مرجعش ل الصففحه ال فاتت
             );
             return false; //عشان مرجعش لورا بالغلط و اقفل التطبيق
+            // عشان مرجعش لورا بالغلط
           },
           child: Scaffold(
             body: Stack(

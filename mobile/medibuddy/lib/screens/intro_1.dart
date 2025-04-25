@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:medibuddy/consts.dart';
 import 'package:medibuddy/widgets/animated_buble.dart';
@@ -51,7 +52,7 @@ class Intro1 extends StatelessWidget {
 
           AnimatedMessegeIntroBox(
             messege:
-                "Hello, I am your AI friend! \n I am here to help you \n with your health and wellness.",
+                "message_intro_1".tr(), 
           ),
 
           AnimatedRobotIntro_1_2(robotImage: 'lib/assets/images/robot_1.png'),

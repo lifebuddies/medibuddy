@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:medibuddy/consts.dart';
 
 class UserEmailDetail extends StatelessWidget {
   const UserEmailDetail({super.key});
@@ -10,9 +12,9 @@ class UserEmailDetail extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Email :',
+          'email_:'.tr(),
           style: TextStyle(
-            color: Colors.black,
+            color: textBlackColor,
             fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
@@ -21,9 +23,9 @@ class UserEmailDetail extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: Text(
-            "mohmmedghoniem@.com",
+            "mmohmmeayman710@gmailcom",
             style: TextStyle(
-              color: Colors.blue.shade900,
+              color: currentDividerColor,
               fontSize: 18,
               fontWeight: FontWeight.w500,
             ),
