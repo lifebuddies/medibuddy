@@ -7,10 +7,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -22,7 +25,11 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
+import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
+import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
@@ -31,10 +38,9 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
 import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
 import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
@@ -105,7 +111,8 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	RegisteredClientRepository registeredClientRepository() {
+	RegisteredClientRepository registeredClientRepository(JdbcTemplate template) {
+		var clients = new JdbcRegisteredClientRepository(template);
 
 		var frontendClient = RegisteredClient.withId(UUID.randomUUID().toString())
 				.clientId(FRONTEND_CLIENT_ID)
@@ -163,7 +170,14 @@ public class SecurityConfig {
 						.build())
 				.build();
 
-		return new InMemoryRegisteredClientRepository(frontendClient, mobileAppClient, webApiClient);
+		if (clients.findByClientId(FRONTEND_CLIENT_ID) == null)
+			clients.save(frontendClient);
+		if (clients.findByClientId(MOBILE_APP_CLIENT_ID) == null)
+			clients.save(mobileAppClient);
+		if (clients.findByClientId(WEB_API_CLIENT_ID) == null)
+			clients.save(webApiClient);
+
+		return clients;
 	}
 
 	@Bean
@@ -185,8 +199,8 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	UserDetailsManager userDetailsManager() {
-		var users = new InMemoryUserDetailsManager();
+	UserDetailsManager userDetailsManager(DataSource dataSource) {
+		var users = new JdbcUserDetailsManager(dataSource);
 		var user = User.withUsername(DEFAULT_SECURITY_USERNAME)
 				.password(passwordEncoder().encode(DEFAULT_SECURITY_PASSWORD))
 				.roles(DEFAULT_SECURITY_ROLE)
@@ -202,6 +216,18 @@ public class SecurityConfig {
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
 		Map<String, PasswordEncoder> encoders = Map.of("bcrypt", bcrypt);
 		return new DelegatingPasswordEncoder("bcrypt", encoders);
+	}
+
+	@Bean
+	OAuth2AuthorizationConsentService consentService(JdbcTemplate template,
+			RegisteredClientRepository clientRepository) {
+		return new JdbcOAuth2AuthorizationConsentService(template, clientRepository);
+	}
+
+	@Bean
+	OAuth2AuthorizationService authorizationService(JdbcTemplate template,
+			RegisteredClientRepository clientRepository) {
+		return new JdbcOAuth2AuthorizationService(template, clientRepository);
 	}
 
 }
