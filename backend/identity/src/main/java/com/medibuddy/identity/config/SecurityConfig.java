@@ -51,23 +51,29 @@ import com.nimbusds.jose.proc.SecurityContext;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Value("${REDIRECT_URI:http://localhost:4200/callback}")
-	private String REDIRECT_URI;
-
 	@Value("${ISSUER_URI:http://localhost:9000}")
 	private String ISSUER_URI;
 
 	@Value("${FRONTEND_CLIENT_ID:medibuddy-frontend}")
 	private String FRONTEND_CLIENT_ID;
 
+	@Value("${FRONTEND_REDIRECT_URI:}")
+	private String FRONTEND_REDIRECT_URI;
+
 	@Value("${MOBILE_APP_CLIENT_ID:medibuddy-mobile-app}")
 	private String MOBILE_APP_CLIENT_ID;
+
+	@Value("${MOBILE_APP_REDIRECT_URI:}")
+	private String MOBILE_APP_REDIRECT_URI;
 
 	@Value("${WEB_API_CLIENT_ID:medibuddy-webapi}")
 	private String WEB_API_CLIENT_ID;
 
 	@Value("${WEB_API_CLIENT_SECRET:medibuddy-webapi-secret}")
 	private String WEB_API_CLIENT_SECRET;
+
+	@Value("${WEB_API_REDIRECT_URI:http://localhost:8080/login/oauth2/code/medibuddy-webapi}")
+	private String WEB_API_REDIRECT_URI;
 
 	private Set<String> MOBILE_APP_CLIENT_SCOPES = Set.of();
 	private Set<String> FRONTEND_CLIENT_SCOPES = Set.of();
@@ -116,7 +122,7 @@ public class SecurityConfig {
 
 		var frontendClient = RegisteredClient.withId(UUID.randomUUID().toString())
 				.clientId(FRONTEND_CLIENT_ID)
-				.redirectUri(REDIRECT_URI)
+				.redirectUri(FRONTEND_REDIRECT_URI)
 				.scope(OidcScopes.OPENID)
 				.scope(OidcScopes.PROFILE)
 				.scope(OidcScopes.EMAIL)
@@ -144,7 +150,7 @@ public class SecurityConfig {
 				.scope(OidcScopes.PROFILE)
 				.scope(OidcScopes.EMAIL)
 				.scopes((scopes) -> scopes.addAll(MOBILE_APP_CLIENT_SCOPES))
-				.redirectUri(REDIRECT_URI)
+				.redirectUri(MOBILE_APP_REDIRECT_URI)
 				.clientSettings(ClientSettings.builder()
 						.requireAuthorizationConsent(true)
 						.requireProofKey(true)
@@ -162,7 +168,7 @@ public class SecurityConfig {
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
 				.scopes((scopes) -> scopes.addAll(WEB_API_CLIENT_SCOPES))
-				.redirectUri(REDIRECT_URI)
+				.redirectUri(WEB_API_REDIRECT_URI)
 				.tokenSettings(TokenSettings.builder()
 						.accessTokenFormat(OAuth2TokenFormat.REFERENCE)
 						.accessTokenTimeToLive(Duration.ofMinutes(15))
