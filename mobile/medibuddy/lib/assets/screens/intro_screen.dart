@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:medibuddy/assets/screens/intro_1.dart';
 import 'package:medibuddy/assets/screens/intro_2.dart';
-import 'package:medibuddy/assets/screens/intro_3.dart';
 import 'package:medibuddy/widgets/intro_navigator_bar.dart';
 
 // ignore: must_be_immutable
@@ -26,14 +25,14 @@ class _IntroScreenState extends State<IntroScreen> {
             controller: controller,
             onPageChanged: (ind) {
               setState(() {});
-              if (ind == 2) {
+              if (ind == 1) {
                 isLastPage = true;
               } else {
                 isLastPage = false;
               }
             },
 
-            children: [const Intro1(), const Intro2(), const Intro3()],
+            children: [const Intro1(), const Intro2()],
           ),
           IntroNavigatorBar(controller: controller, isLastPage: isLastPage),
         ],
