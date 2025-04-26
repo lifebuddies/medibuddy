@@ -25,15 +25,15 @@ public class OAuth2Authorization {
     private String authorizedScopes;
 
     @Lob
-    @Column(name = "attributes")
-    private byte[] attributes;
+    @Column(name = "attributes", columnDefinition = "TEXT")
+    private String attributes;
 
     @Column(name = "state", length = 500)
     private String state;
 
     @Lob
-    @Column(name = "authorization_code_value")
-    private byte[] authorizationCodeValue;
+    @Column(name = "authorization_code_value", columnDefinition = "TEXT")
+    private String authorizationCodeValue;
 
     @Column(name = "authorization_code_issued_at")
     private Instant authorizationCodeIssuedAt;
@@ -42,12 +42,12 @@ public class OAuth2Authorization {
     private Instant authorizationCodeExpiresAt;
 
     @Lob
-    @Column(name = "authorization_code_metadata")
-    private byte[] authorizationCodeMetadata;
+    @Column(name = "authorization_code_metadata", columnDefinition = "TEXT")
+    private String authorizationCodeMetadata;
 
     @Lob
-    @Column(name = "access_token_value")
-    private byte[] accessTokenValue;
+    @Column(name = "access_token_value", columnDefinition = "TEXT")
+    private String accessTokenValue;
 
     @Column(name = "access_token_issued_at")
     private Instant accessTokenIssuedAt;
@@ -56,8 +56,8 @@ public class OAuth2Authorization {
     private Instant accessTokenExpiresAt;
 
     @Lob
-    @Column(name = "access_token_metadata")
-    private byte[] accessTokenMetadata;
+    @Column(name = "access_token_metadata", columnDefinition = "TEXT")
+    private String accessTokenMetadata;
 
     @Column(name = "access_token_type", length = 100)
     private String accessTokenType;
@@ -66,8 +66,8 @@ public class OAuth2Authorization {
     private String accessTokenScopes;
 
     @Lob
-    @Column(name = "oidc_id_token_value")
-    private byte[] oidcIdTokenValue;
+    @Column(name = "oidc_id_token_value", columnDefinition = "TEXT")
+    private String oidcIdTokenValue;
 
     @Column(name = "oidc_id_token_issued_at")
     private Instant oidcIdTokenIssuedAt;
@@ -76,12 +76,12 @@ public class OAuth2Authorization {
     private Instant oidcIdTokenExpiresAt;
 
     @Lob
-    @Column(name = "oidc_id_token_metadata")
-    private byte[] oidcIdTokenMetadata;
+    @Column(name = "oidc_id_token_metadata", columnDefinition = "TEXT")
+    private String oidcIdTokenMetadata;
 
     @Lob
-    @Column(name = "refresh_token_value")
-    private byte[] refreshTokenValue;
+    @Column(name = "refresh_token_value", columnDefinition = "TEXT")
+    private String refreshTokenValue;
 
     @Column(name = "refresh_token_issued_at")
     private Instant refreshTokenIssuedAt;
@@ -90,12 +90,12 @@ public class OAuth2Authorization {
     private Instant refreshTokenExpiresAt;
 
     @Lob
-    @Column(name = "refresh_token_metadata")
-    private byte[] refreshTokenMetadata;
+    @Column(name = "refresh_token_metadata", columnDefinition = "TEXT")
+    private String refreshTokenMetadata;
 
     @Lob
-    @Column(name = "user_code_value")
-    private byte[] userCodeValue;
+    @Column(name = "user_code_value", columnDefinition = "TEXT")
+    private String userCodeValue;
 
     @Column(name = "user_code_issued_at")
     private Instant userCodeIssuedAt;
@@ -104,12 +104,12 @@ public class OAuth2Authorization {
     private Instant userCodeExpiresAt;
 
     @Lob
-    @Column(name = "user_code_metadata")
-    private byte[] userCodeMetadata;
+    @Column(name = "user_code_metadata", columnDefinition = "TEXT")
+    private String userCodeMetadata;
 
     @Lob
-    @Column(name = "device_code_value")
-    private byte[] deviceCodeValue;
+    @Column(name = "device_code_value", columnDefinition = "TEXT")
+    private String deviceCodeValue;
 
     @Column(name = "device_code_issued_at")
     private Instant deviceCodeIssuedAt;
@@ -118,7 +118,7 @@ public class OAuth2Authorization {
     private Instant deviceCodeExpiresAt;
 
     @Lob
-    @Column(name = "device_code_metadata")
-    private byte[] deviceCodeMetadata;
+    @Column(name = "device_code_metadata", columnDefinition = "TEXT")
+    private String deviceCodeMetadata;
 }
 

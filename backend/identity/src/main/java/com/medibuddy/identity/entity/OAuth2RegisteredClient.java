@@ -3,8 +3,12 @@ package com.medibuddy.identity.entity;
 import jakarta.persistence.*;
 import java.time.Instant;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 @Entity
 @Table(name = "oauth2_registered_client")
+@EntityListeners(AuditingEntityListener.class)
 public class OAuth2RegisteredClient {
 
     @Id
@@ -14,7 +18,8 @@ public class OAuth2RegisteredClient {
     @Column(name = "client_id", length = 100, nullable = false)
     private String clientId;
 
-    @Column(name = "client_id_issued_at", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @CreatedDate
+    @Column(name = "client_id_issued_at", nullable = false)
     private Instant clientIdIssuedAt;
 
     @Column(name = "client_secret", length = 200)
