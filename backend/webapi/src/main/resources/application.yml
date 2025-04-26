@@ -3,3 +3,30 @@ spring:
     name: webapi
   liquibase:
     enabled: false
+  security:
+    oauth2:
+      client:
+        registration:
+          medibuddy-webapi:
+            client-id: medibuddy-webapi
+            client-secret: ${WEB_API_CLIENT_SECRET:medibuddy-webapi-secret}
+            scope: 
+            authorization-grant-type: authorization_code
+            redirect-uri: ${WEB_API_REDIRECT_URI:http://localhost:8080/login/oauth2/code/medibuddy-webapi}
+            provider: medibuddy-identity
+        provider:
+          medibuddy-identity:
+            
+            issuer-uri: ${ISSUER_URI:http://localhost:9000}
+      resourceserver:
+        opaquetoken:
+          client-id: medibuddy-webapi
+          client-secret: ${WEB_API_CLIENT_SECRET:medibuddy-webapi-secret}
+          introspection-uri: ${INTROSPECTION_URI:http://localhost:9000/introspect}
+
+logging:
+  level:
+    org.springframework.security.oauth2.client: TRACE
+    org.springframework.security.oauth2.core: TRACE
+    org.springframework.security.oauth2.client.registration: TRACE
+    org.springframework.security.oauth2.client.web: TRACE
