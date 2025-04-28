@@ -49,12 +49,10 @@ class SelectThemeMode extends StatelessWidget {
                     "DarkTheme",
                   );
                   textBlackColor = textWhiteColor;
-                  currentDrawerColor = Color.fromARGB(225, 26, 95, 183);
-                  currentThemeColor = Color.fromARGB(255, 0, 30, 69);
+                  currentDrawerColor = Color.fromARGB(255, 0, 30, 69);
+                  currentThemeColor = currentDrawerColor = currentTextColor;
                   textBlackColor = Colors.white;
-                  textWhiteColor = Colors.white;
-                  currentDividerColor = textWhiteColor;
-                  currentTextColor = currentThemeColor;
+                  textWhiteColor = textBlackColor = currentDividerColor;
                 },
                 icon: Icon(Icons.dark_mode, size: 30, color: textBlackColor),
               ),

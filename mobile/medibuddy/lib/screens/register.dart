@@ -48,7 +48,7 @@ class Register extends StatelessWidget {
                     ),
                   ),
 
-                  const ChoosingImageAvatarButton(radius: 60),
+                   ChoosingImageAvatarButton(radius: 60),
                   const SizedBox(height: 30),
                   CustomTextfield(
                     hintText: 'name'.tr(),

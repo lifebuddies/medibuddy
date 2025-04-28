@@ -7,3 +7,4 @@ Color textBlackColor = Colors.black87;
 Color currentTextColor = currentThemeColor;
 Color currentDrawerColor = Colors.blue.shade900;
 Color currentDividerColor = currentDrawerColor;
+String userImage = "lib/assets/images/defultUser.jpeg";
