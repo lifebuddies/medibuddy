@@ -10,10 +10,10 @@ class UserAvatarDetail extends StatelessWidget {
     return Container(
       width: 200,
       height: 200,
-      // padding: const EdgeInsets.all(.00000009), 
+      // padding: const EdgeInsets.all(.00000009),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: textBlackColor, // ← الإطار الأبيض
+        color: textWhiteColor, // ← الإطار الأبيض
       ),
       child: const ChoosingImageAvatarButton(
         radius: 96,

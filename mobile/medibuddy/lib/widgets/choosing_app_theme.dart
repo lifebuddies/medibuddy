@@ -35,12 +35,20 @@ class ChoosingAppTheme extends StatelessWidget {
                     themeColor = context.read<ThemeCubit>().changTheme(
                       "BlueTheme",
                     );
-                    currentThemeColor = Color.fromARGB(225, 26, 95, 183);
-                    textWhiteColor = Colors.white;
-                    textBlackColor = Colors.black87;
-                    currentTextColor = currentThemeColor;
-                    currentDrawerColor = Colors.blue.shade900;
-                    currentDividerColor = currentThemeColor;
+                    // currentThemeColor = Color.fromARGB(225, 26, 95, 183);
+                    // textWhiteColor = Colors.white;
+                    // textBlackColor = Colors.black87;
+                    // currentTextColor = currentThemeColor;
+                    // currentDrawerColor = Colors.blue.shade900;
+                    // currentDividerColor = currentThemeColor;
+                    // //save the theme color to shared preferences
+                    // saveTheme(themeColor);
+                    var selectedTheme = allThemes["BlueTheme"]!;
+                    context.read<ThemeCubit>().changTheme(
+                      selectedTheme.themeName,
+                    );
+                    applyTheme(selectedTheme);
+                    saveTheme(selectedTheme.themeName);
                   },
                   icon: Icon(
                     Icons.circle,
@@ -53,12 +61,20 @@ class ChoosingAppTheme extends StatelessWidget {
                     themeColor = context.read<ThemeCubit>().changTheme(
                       "PinkTheme",
                     );
-                    currentThemeColor = Color.fromARGB(225, 229, 53, 97);
-                    textWhiteColor = Colors.white;
-                    textBlackColor = Colors.black87;
-                    currentTextColor = currentThemeColor;
-                    currentDrawerColor = Colors.pink.shade900;
-                    currentDividerColor = currentThemeColor;
+                    // currentThemeColor = Color.fromARGB(225, 229, 53, 97);
+                    // textWhiteColor = Colors.white;
+                    // textBlackColor = Colors.black87;
+                    // currentTextColor = currentThemeColor;
+                    // currentDrawerColor = Colors.pink.shade900;
+                    // currentDividerColor = currentThemeColor;
+                    // //save the theme color to shared preferences
+                    // saveTheme(themeColor);
+                    var selectedTheme = allThemes["PinkTheme"]!;
+                    context.read<ThemeCubit>().changTheme(
+                      selectedTheme.themeName,
+                    );
+                    applyTheme(selectedTheme);
+                    saveTheme(selectedTheme.themeName);
                   },
                   icon: Icon(Icons.circle, color: Colors.pink, size: 30),
                 ),
@@ -67,12 +83,20 @@ class ChoosingAppTheme extends StatelessWidget {
                     themeColor = context.read<ThemeCubit>().changTheme(
                       "GreenTheme",
                     );
-                    currentThemeColor = Color.fromARGB(225, 0, 96, 81);
-                    textWhiteColor = Colors.white;
-                    textBlackColor = Colors.black87;
-                    currentTextColor = currentThemeColor;
-                    currentDrawerColor = currentThemeColor;
-                    currentDividerColor = currentThemeColor;
+                    // currentThemeColor = Color.fromARGB(225, 0, 96, 81);
+                    // textWhiteColor = Colors.white;
+                    // textBlackColor = Colors.black87;
+                    // currentTextColor = currentThemeColor;
+                    // currentDrawerColor = currentThemeColor;
+                    // currentDividerColor = currentThemeColor;
+                    // //save the theme color to shared preferences
+                    // saveTheme(themeColor);
+                    var selectedTheme = allThemes["GreenTheme"]!;
+                    context.read<ThemeCubit>().changTheme(
+                      selectedTheme.themeName,
+                    );
+                    applyTheme(selectedTheme);
+                    saveTheme(selectedTheme.themeName);
                   },
                   icon: Icon(
                     Icons.circle,

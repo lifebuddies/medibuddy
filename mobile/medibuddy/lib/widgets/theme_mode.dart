@@ -29,30 +29,58 @@ class SelectThemeMode extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // IconButton(
+              //   onPressed: () {
+              //     themeColor = context.read<ThemeCubit>().changTheme(
+              //       "BlueTheme",
+              //     );
+              //     currentThemeColor = Color.fromARGB(225, 26, 95, 183);
+              //     textWhiteColor = Colors.white;
+              //     textBlackColor = Colors.black87;
+              //     currentTextColor = currentThemeColor;
+              //     currentDrawerColor = Colors.blue.shade900;
+              //     currentDividerColor = currentThemeColor;
+              //     //save the theme color to shared preferences
+              //     saveTheme(themeColor);
+              //   },
+              //   icon: Icon(Icons.sunny, size: 30, color: textBlackColor),
+              // ),
               IconButton(
                 onPressed: () {
-                  themeColor = context.read<ThemeCubit>().changTheme(
-                    "BlueTheme",
+                  var selectedTheme = allThemes["BlueTheme"]!;
+                  context.read<ThemeCubit>().changTheme(
+                    selectedTheme.themeName,
                   );
-                  currentThemeColor = Color.fromARGB(225, 26, 95, 183);
-                  textWhiteColor = Colors.white;
-                  textBlackColor = Colors.black87;
-                  currentTextColor = currentThemeColor;
-                  currentDrawerColor = Colors.blue.shade900;
-                  currentDividerColor = currentThemeColor;
+                  applyTheme(selectedTheme);
+                  saveTheme(selectedTheme.themeName);
                 },
                 icon: Icon(Icons.sunny, size: 30, color: textBlackColor),
               ),
+              // IconButton(
+              //   onPressed: () async {
+              //     themeColor = context.read<ThemeCubit>().changTheme(
+              //       "DarkTheme",
+              //     );
+              //     textBlackColor = textWhiteColor;
+              //     currentDrawerColor = Color.fromARGB(225, 26, 95, 183);
+              //     currentThemeColor = Color.fromARGB(255, 0, 30, 69);
+              //     textBlackColor = Colors.white;
+              //     textWhiteColor = Colors.white;
+              //     currentDividerColor = textWhiteColor;
+              //     currentTextColor = currentThemeColor;
+              //     //save the theme color to shared preferences
+              //     saveTheme(themeColor);
+              //   },
+              //   icon: Icon(Icons.dark_mode, size: 30, color: textBlackColor),
+              // ),
               IconButton(
                 onPressed: () {
-                  themeColor = context.read<ThemeCubit>().changTheme(
-                    "DarkTheme",
+                  var selectedTheme = allThemes["DarkTheme"]!;
+                  context.read<ThemeCubit>().changTheme(
+                    selectedTheme.themeName,
                   );
-                  textBlackColor = textWhiteColor;
-                  currentDrawerColor = Color.fromARGB(255, 0, 30, 69);
-                  currentThemeColor = currentDrawerColor = currentTextColor;
-                  textBlackColor = Colors.white;
-                  textWhiteColor = textBlackColor = currentDividerColor;
+                  applyTheme(selectedTheme);
+                  saveTheme(selectedTheme.themeName);
                 },
                 icon: Icon(Icons.dark_mode, size: 30, color: textBlackColor),
               ),

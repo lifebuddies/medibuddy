@@ -1,9 +1,8 @@
 import 'dart:io';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:medibuddy/consts.dart';
+import 'package:medibuddy/widgets/choosing_image_avatar_model_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChoosingImageAvatarButton extends StatefulWidget {
@@ -18,6 +17,7 @@ class _MyWidgetState extends State<ChoosingImageAvatarButton> {
   File? _pickedImage;
 
   final ImagePicker _picker = ImagePicker();
+  @override
   void initState() {
     super.initState();
     _loadSavedImage();
@@ -27,10 +27,10 @@ class _MyWidgetState extends State<ChoosingImageAvatarButton> {
     final XFile? pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
-        _pickedImage = File(pickedFile.path); // نحدث الفايل المعروض
-        userImage = pickedFile.path; // نخزن الباث في المتغير
+        _pickedImage = File(pickedFile.path);
+        userImage = pickedFile.path;
       });
-      await _saveImagePath(pickedFile.path); // وكمان نحفظه في SharedPreferences
+      await _saveImagePath(pickedFile.path);
     }
   }
 
@@ -47,6 +47,12 @@ class _MyWidgetState extends State<ChoosingImageAvatarButton> {
         userImage = savedPath;
         _pickedImage = File(savedPath);
       });
+    } else {
+      setState(() {
+        _pickedImage = null;
+        userImage =
+            "lib/assets/images/defultUser.jpeg"; // المسار الصحيح للـ Asset
+      });
     }
   }
 
@@ -54,28 +60,60 @@ class _MyWidgetState extends State<ChoosingImageAvatarButton> {
   Widget build(BuildContext context) {
     return IconButton(
       iconSize: widget.radius * 2,
-
       onPressed: () {
-        showDialog(
+        showModalBottomSheet(
+          isScrollControlled: true,
+          isDismissible: true,
+          backgroundColor: Colors.white,
           context: context,
-          builder:
-              (context) => AlertDialog(
-                title: const Text('select_image').tr(),
-                content: Column(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(50),
+              bottom: Radius.circular(50),
+            ),
+          ),
+          builder: (BuildContext context) {
+            return Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(50),
+                  bottom: Radius.circular(50),
+                ),
+              ),
+              margin: const EdgeInsets.all(5),
+              height: 150,
+              child: Container(
+                height: 150,
+                decoration: BoxDecoration(
+                  color: currentThemeColor,
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(50),
+                    bottom: Radius.circular(50),
+                  ),
+                ),
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ListTile(
-                      leading: const Icon(Icons.camera_alt_outlined),
-                      title: const Text('camera').tr(),
-                      onTap: () {
+                    ChoosingImageAvatarModelButton(
+                      icon: Icons.camera_alt,
+                      text: 'camera',
+                      onImagePicked: () {
                         _pickImage(ImageSource.camera);
                         Navigator.pop(context);
                       },
                     ),
-                    ListTile(
-                      leading: const Icon(Icons.photo),
-                      title: const Text('gallery').tr(),
-                      onTap: () {
+                    Divider(
+                      color: Colors.white,
+                      thickness: .5,
+                      indent: 50,
+                      endIndent: 50,
+                    ),
+                    ChoosingImageAvatarModelButton(
+                      icon: Icons.photo,
+                      text: 'gallery',
+                      onImagePicked: () {
                         _pickImage(ImageSource.gallery);
                         Navigator.pop(context);
                       },
@@ -83,6 +121,8 @@ class _MyWidgetState extends State<ChoosingImageAvatarButton> {
                   ],
                 ),
               ),
+            );
+          },
         );
       },
       icon: CircleAvatar(
@@ -90,8 +130,7 @@ class _MyWidgetState extends State<ChoosingImageAvatarButton> {
         backgroundImage:
             _pickedImage != null
                 ? FileImage(_pickedImage!)
-                : const AssetImage('lib/assets/images/defultUser.jpeg')
-                    as ImageProvider,
+                : AssetImage(userImage) as ImageProvider,
         backgroundColor: Colors.white,
       ),
     );

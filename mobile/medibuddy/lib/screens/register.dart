@@ -76,7 +76,6 @@ class Register extends StatelessWidget {
                     title: 'register'.tr(),
                     onPressed: () {
                       // sign up action
-
                       Navigator.pushReplacement(
                         context,
                         CupertinoPageRoute(
