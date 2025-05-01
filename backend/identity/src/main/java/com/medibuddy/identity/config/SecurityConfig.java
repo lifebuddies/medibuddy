@@ -2,11 +2,7 @@ package com.medibuddy.identity.config;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.time.Duration;
 import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -17,27 +13,19 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.oidc.OidcScopes;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
-import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
-import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
-import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
@@ -54,39 +42,14 @@ public class SecurityConfig {
 	@Value("${ISSUER_URI:http://localhost:9000}")
 	private String ISSUER_URI;
 
-	@Value("${FRONTEND_CLIENT_ID:medibuddy-frontend}")
-	private String FRONTEND_CLIENT_ID;
+	@Value("${MOBILE_CLIENT_SCOPE:mobile.full_access}")
+	private String MOBILE_CLIENT_SCOPE;
 
-	@Value("${FRONTEND_REDIRECT_URI:}")
-	private String FRONTEND_REDIRECT_URI;
+	@Value("${FRONTEND_CLIENT_SCOPE:frontend.full_access}")
+	private String FRONTEND_CLIENT_SCOPE;
 
-	@Value("${MOBILE_APP_CLIENT_ID:medibuddy-mobile-app}")
-	private String MOBILE_APP_CLIENT_ID;
-
-	@Value("${MOBILE_APP_REDIRECT_URI:}")
-	private String MOBILE_APP_REDIRECT_URI;
-
-	@Value("${WEB_API_CLIENT_ID:medibuddy-webapi}")
-	private String WEB_API_CLIENT_ID;
-
-	@Value("${WEB_API_CLIENT_SECRET:medibuddy-webapi-secret}")
-	private String WEB_API_CLIENT_SECRET;
-
-	@Value("${WEB_API_REDIRECT_URI:http://localhost:8080/login/oauth2/code/medibuddy-webapi}")
-	private String WEB_API_REDIRECT_URI;
-
-	private Set<String> MOBILE_APP_CLIENT_SCOPES = Set.of();
-	private Set<String> FRONTEND_CLIENT_SCOPES = Set.of();
-	private Set<String> WEB_API_CLIENT_SCOPES = Set.of();
-
-	@Value("${DEFAULT_SECURITY_USERNAME:username}")
-	private String DEFAULT_SECURITY_USERNAME;
-
-	@Value("${DEFAULT_SECURITY_PASSWORD:password}")
-	private String DEFAULT_SECURITY_PASSWORD;
-
-	@Value("${DEFAULT_SECURITY_ROLE:USER}")
-	private String DEFAULT_SECURITY_ROLE;
+	@Value("${WEBAPI_CLIENT_SCOPE:webapi.full_access}")
+	private String WEBAPI_CLIENT_SCOPE;
 
 	@Bean
 	@Order(1)
@@ -118,72 +81,7 @@ public class SecurityConfig {
 
 	@Bean
 	RegisteredClientRepository registeredClientRepository(JdbcTemplate template) {
-		var clients = new JdbcRegisteredClientRepository(template);
-
-		var frontendClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId(FRONTEND_CLIENT_ID)
-				.redirectUri(FRONTEND_REDIRECT_URI)
-				.scope(OidcScopes.OPENID)
-				.scope(OidcScopes.PROFILE)
-				.scope(OidcScopes.EMAIL)
-				.scopes((scopes) -> scopes.addAll(FRONTEND_CLIENT_SCOPES))
-				.clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				.clientSettings(ClientSettings.builder()
-						.requireAuthorizationConsent(true)
-						.requireProofKey(true)
-						.build())
-				.tokenSettings(TokenSettings.builder()
-						.accessTokenFormat(OAuth2TokenFormat.REFERENCE)
-						.accessTokenTimeToLive(Duration.ofMinutes(15))
-						.refreshTokenTimeToLive(Duration.ofDays(7))
-						.build())
-				.build();
-
-		var mobileAppClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId(MOBILE_APP_CLIENT_ID)
-				.clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
-				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-				.scope(OidcScopes.OPENID)
-				.scope(OidcScopes.PROFILE)
-				.scope(OidcScopes.EMAIL)
-				.scopes((scopes) -> scopes.addAll(MOBILE_APP_CLIENT_SCOPES))
-				.redirectUri(MOBILE_APP_REDIRECT_URI)
-				.clientSettings(ClientSettings.builder()
-						.requireAuthorizationConsent(true)
-						.requireProofKey(true)
-						.build())
-				.tokenSettings(TokenSettings.builder()
-						.accessTokenFormat(OAuth2TokenFormat.REFERENCE)
-						.accessTokenTimeToLive(Duration.ofMinutes(15))
-						.refreshTokenTimeToLive(Duration.ofDays(7))
-						.build())
-				.build();
-
-		var webApiClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId(WEB_API_CLIENT_ID)
-				.clientSecret(WEB_API_CLIENT_SECRET)
-				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-				.scopes((scopes) -> scopes.addAll(WEB_API_CLIENT_SCOPES))
-				.redirectUri(WEB_API_REDIRECT_URI)
-				.tokenSettings(TokenSettings.builder()
-						.accessTokenFormat(OAuth2TokenFormat.REFERENCE)
-						.accessTokenTimeToLive(Duration.ofMinutes(15))
-						.refreshTokenTimeToLive(Duration.ofDays(7))
-						.build())
-				.build();
-
-		if (clients.findByClientId(FRONTEND_CLIENT_ID) == null)
-			clients.save(frontendClient);
-		if (clients.findByClientId(MOBILE_APP_CLIENT_ID) == null)
-			clients.save(mobileAppClient);
-		if (clients.findByClientId(WEB_API_CLIENT_ID) == null)
-			clients.save(webApiClient);
-
-		return clients;
+		return new JdbcRegisteredClientRepository(template);
 	}
 
 	@Bean
@@ -206,15 +104,7 @@ public class SecurityConfig {
 
 	@Bean
 	UserDetailsManager userDetailsManager(DataSource dataSource) {
-		var users = new JdbcUserDetailsManager(dataSource);
-		var user = User.withUsername(DEFAULT_SECURITY_USERNAME)
-				.password(passwordEncoder().encode(DEFAULT_SECURITY_PASSWORD))
-				.roles(DEFAULT_SECURITY_ROLE)
-				.build();
-		if (!users.userExists(DEFAULT_SECURITY_USERNAME)) {
-			users.createUser(user);
-		}
-		return users;
+		return new JdbcUserDetailsManager(dataSource);
 	}
 
 	@Bean
