@@ -37,13 +37,13 @@ public class MlModelBlueprint extends BaseEntity {
     @JoinTable(
         name = "model_inputs",
         joinColumns = @JoinColumn(name = "model_id"),
-        inverseJoinColumns = @JoinColumn(name = "input_id")
+        inverseJoinColumns = @JoinColumn(name = "input_column_id")
     )
     @OrderColumn(name = "input_column_order")
     private List<MlModelColumn> inputsColumns;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @Column(name = "output_column")
+    @JoinColumn(name = "output_column_id")
     private MlModelColumn outputColumn;
 
     public enum State {

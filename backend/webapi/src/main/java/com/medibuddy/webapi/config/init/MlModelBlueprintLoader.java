@@ -5,15 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Component;
 
 import com.medibuddy.webapi.ai.MlModelPipeline;
+import com.medibuddy.webapi.ai.model.DietRecommendationMlModelPipeline;
+import com.medibuddy.webapi.ai.model.NoOpMlModelPipeline;
 import com.medibuddy.webapi.entity.ai.MlModelBlueprint;
 import com.medibuddy.webapi.repository.ai.MlModelRepository;
 
@@ -33,9 +31,11 @@ public class MlModelBlueprintLoader implements ApplicationRunner {
 		MODELS = new HashMap<>();
 		List<MlModelBlueprint> models = mlModelRepository.findAll();
 		for (MlModelBlueprint model : models) {
-			MODELS.put(model.getName(), new MlModelPipeline(model.getName(), model));
+			MODELS.put(model.getName(), new NoOpMlModelPipeline(model.getName(), model));
 			log.info("Loaded model: " + model.getName());
 		}
+		MODELS.put(DietRecommendationMlModelPipeline.MODEL_NAME, new DietRecommendationMlModelPipeline());
+		log.info("Loaded model: " + DietRecommendationMlModelPipeline.MODEL_NAME);
 	}
 
 }

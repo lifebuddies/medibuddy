@@ -67,4 +67,55 @@ public class MedicalRecord extends BaseEntity {
     @Column(name = "vessels_colored")
     private Integer numVesselsColored;
 
+    @Column(name = "weight_kg")
+    private Float weightKg;
+
+    @Column(name = "height_cm")
+    private Float heightCm;
+
+    @Column(name = "gender")
+    private String gender;
+
+    @Column(name = "dietary_restrictions")
+    private String dietaryRestrictions;
+
+    @Column(name = "allergy")
+    private String allergy;
+
+    @Column(name = "disease_type")
+    private String diseaseType;
+
+    @Column(name = "severity")
+    private String severity;
+
+    @Column(name = "physical_activity_level")
+    private String physicalActivityLevel;
+
+    @Column(name = "preferred_cuisine")
+    private String preferredCuisine;
+
+    @Column(name = "weekly_exercise_hours")
+    private Float weeklyExerciseHours;
+
+    @Column(name = "adherence_to_diet_plan")
+    private Float adherenceToDietPlan;
+
+    @Column(name = "dietary_nutrient_imbalance_score")
+    private Float dietaryNutrientImbalanceScore;
+
+    @Column(name = "bmi")
+    private Float BMI;
+
+    @Column(name = "daily_caloric_intake")
+    private Float dailyCaloricIntake;
+
+    @Column(name = "cholesterol_mg_dl")
+    private Float cholesterolMgDL;
+
+    @Column(name = "blood_pressure_mmHg")
+    private Float bloodPressureMmHg;
+
+    @Column(name = "glucose_mg_dL")
+    private Float glucoseMgDL;
+
 }
