@@ -1,8 +1,17 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   application:
     name: webapi
+  datasource:
+    driver-class-name: org.postgresql.Driver
   liquibase:
     enabled: false
+  jpa:
+    show-sql: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
   security:
     oauth2:
       client:

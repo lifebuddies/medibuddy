@@ -20,9 +20,6 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        default_schema: medibuddy
 
 server:
   port: ${AUTHORIZATION_SERVER_PORT}
