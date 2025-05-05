@@ -1,7 +1,7 @@
 name: medibuddy
 services:
   identity:
-    image: 'eclipse-temurin:21-jdk-alpine'
+    image: 'eclipse-temurin:21-jdk'
     depends_on:
       - postgres
     expose:
@@ -12,14 +12,15 @@ services:
     volumes:
       - ./identity/target:/medibuddy/identity
     env_file:
-      - .env
+      - docker.env
     stdin_open: true
     tty: true
     command: ["java", "-jar", "identity-0.0.1-SNAPSHOT.jar"]
 
   webapi:
-    image: 'eclipse-temurin:21-jdk-alpine'
+    image: 'eclipse-temurin:21-jdk'
     depends_on:
+      - identity
       - postgres
     expose:
       - 8080
@@ -29,7 +30,7 @@ services:
     volumes:
       - ./webapi/target:/medibuddy/webapi
     env_file:
-      - .env
+      - docker.env
     stdin_open: true
     tty: true
     command: ["java", "-jar", "webapi-0.0.1-SNAPSHOT.jar"]
