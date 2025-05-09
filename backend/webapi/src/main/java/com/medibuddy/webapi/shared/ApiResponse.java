@@ -4,7 +4,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -12,15 +11,30 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import lombok.Getter;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ApiResponse<T>(
-		boolean success,
-		int status,
-		String message,
-		T data,
-		List<String> errors,
-		String path,
-		ZonedDateTime timestamp) {
+@Getter
+public class ApiResponse<T> {
+
+	private boolean success;
+	private int status;
+	private String message;
+	private T data;
+	private List<String> errors;
+	private String path;
+	private ZonedDateTime timestamp;
+
+	protected ApiResponse(boolean success, int status, String message, T data, List<String> errors, String path,
+			ZonedDateTime timestamp) {
+		this.success = success;
+		this.status = status;
+		this.message = message;
+		this.data = data;
+		this.errors = errors;
+		this.path = path;
+		this.timestamp = timestamp;
+	}
 
 	public static <T> ApiResponse<T> success(T data, String message) {
 		return success(data, message, HttpStatus.OK);
@@ -72,12 +86,8 @@ public record ApiResponse<T>(
 				ZonedDateTime.now(ZoneOffset.UTC));
 	}
 
-	public ResponseEntity<ApiResponse<T>> toResponseEntity() {
+	public ResponseEntity<?> toResponseEntity() {
 		return ResponseEntity.status(status).body(this);
-	}
-
-	public static <T> ApiResponse<List<T>> of(Page<T> page, String message) {
-		return ApiResponse.success(page.getContent(), message);
 	}
 
 	private static String getRequestPath() {
