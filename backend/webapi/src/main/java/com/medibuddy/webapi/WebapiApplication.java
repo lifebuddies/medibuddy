@@ -6,10 +6,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.medibuddy.webapi.ai.model.DietRecommendationMlModelPipeline;
-import com.medibuddy.webapi.entity.analysis.MedicalRecord;
+import com.medibuddy.webapi.entity.ai.MlModelInputs;
 
+@EnableJpaAuditing
 @SpringBootApplication
 public class WebapiApplication {
 
@@ -21,8 +23,8 @@ public class WebapiApplication {
 	CommandLineRunner commandLineRunner() {
 		return args -> {
 			var model = new DietRecommendationMlModelPipeline();
-			System.out.println("Model Prediction: " + model.predict(List.of(MedicalRecord.builder()
-					.age(56)
+			System.out.println("Model Prediction: " + model.predict(List.of(MlModelInputs.builder()
+					.age(56.f)
 					.gender("Male")
 					.weightKg(58.4f)
 					.heightCm(160.f)
