@@ -4,6 +4,6 @@ import com.medibuddy.webapi.entity.account.UserFeedback.FeedbackType;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record FeedbackRequest(FeedbackType type, @NotBlank String message) {
+public record UserFeedbackRequest(FeedbackType type, @NotBlank String message) {
 
 }
