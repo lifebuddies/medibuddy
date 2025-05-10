@@ -5,35 +5,20 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Getter;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
-public class ApiResponse<T> {
+public class ApiResponse<T> extends BaseApiResponse<T, ApiResponse<T>> {
 
-	private boolean success;
-	private int status;
-	private String message;
-	private T data;
-	private List<String> errors;
-	private String path;
-	private ZonedDateTime timestamp;
+	protected T data;
 
 	protected ApiResponse(boolean success, int status, String message, T data, List<String> errors, String path,
 			ZonedDateTime timestamp) {
-		this.success = success;
-		this.status = status;
-		this.message = message;
+		super(success, status, message, errors, path, timestamp);
 		this.data = data;
-		this.errors = errors;
-		this.path = path;
-		this.timestamp = timestamp;
 	}
 
 	public static <T> ApiResponse<T> success(T data, String message) {
@@ -84,19 +69,6 @@ public class ApiResponse<T> {
 				errors,
 				getRequestPath(),
 				ZonedDateTime.now(ZoneOffset.UTC));
-	}
-
-	public ResponseEntity<?> toResponseEntity() {
-		return ResponseEntity.status(status).body(this);
-	}
-
-	private static String getRequestPath() {
-		ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-		if (attrs == null) {
-			throw new IllegalStateException(
-					"No request attributes found. This method must be called in the context of an HTTP request.");
-		}
-		return attrs.getRequest().getRequestURI();
 	}
 
 }

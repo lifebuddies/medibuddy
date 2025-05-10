@@ -13,12 +13,12 @@ import lombok.Getter;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
-public class PaginatedApiResponse<T> extends ApiResponse<T> {
+public class PaginatedApiResponse<T> extends BaseApiResponse<T, PaginatedApiResponse<T>> {
 
 	private long totalPages;
 	private long totalElements;
 	private long size;
-	private List<T> content;
+	private List<T> data;
 	private long number;
 	private Sort sort;
 	private long numberOfElements;
@@ -29,12 +29,11 @@ public class PaginatedApiResponse<T> extends ApiResponse<T> {
 
 	protected PaginatedApiResponse(boolean success, int status, String message, Page<T> page, List<String> errors,
 			String path, ZonedDateTime timestamp) {
-
-		super(success, status, message, null, errors, path, timestamp);
+		super(success, status, message, errors, path, timestamp);
 		this.totalPages = page.getTotalPages();
 		this.totalElements = page.getTotalElements();
 		this.size = page.getSize();
-		this.content = page.getContent();
+		this.data = page.getContent();
 		this.number = page.getNumber();
 		this.sort = page.getSort();
 		this.numberOfElements = page.getNumberOfElements();
