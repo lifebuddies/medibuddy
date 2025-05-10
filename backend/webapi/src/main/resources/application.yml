@@ -19,8 +19,8 @@ spring:
           medibuddy-webapi:
             client-id: ${WEB_API_CLIENT_ID:medibuddy-webapi}
             client-secret: ${WEB_API_CLIENT_SECRET:medibuddy-webapi-secret}
-            scope: 
-            authorization-grant-type: authorization_code
+            scope: ${WEBAPI_CLIENT_SCOPE:webapi.full_access}
+            authorization-grant-type: client_credentials
             redirect-uri: ${WEB_API_REDIRECT_URI:http://localhost:8080/login/oauth2/code/medibuddy-webapi}
             provider: medibuddy-identity
         provider:
