@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.medibuddy.webapi.ai.MlModelPipeline;
 import com.medibuddy.webapi.entity.ai.MlModelBlueprint;
-import com.medibuddy.webapi.entity.analysis.MedicalRecord;
+import com.medibuddy.webapi.entity.ai.MlModelInputs;
 
 import ai.onnxruntime.OrtException;
 
@@ -17,7 +17,7 @@ public class NoOpMlModelPipeline extends MlModelPipeline {
 	}
 
 	@Override
-	public List<String> predict(List<MedicalRecord> input) {
+	public List<String> predict(List<MlModelInputs> input) {
 		// This is a no-op model, so we just return an empty string list
 		return Arrays.asList(new String[input.size()]);
 	}

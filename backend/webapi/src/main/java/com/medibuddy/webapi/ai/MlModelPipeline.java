@@ -1,9 +1,14 @@
 package com.medibuddy.webapi.ai;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
 import com.medibuddy.webapi.entity.ai.MlModelBlueprint;
-import com.medibuddy.webapi.entity.analysis.MedicalRecord;
+import com.medibuddy.webapi.entity.ai.MlModelInputs;
+import ai.onnxruntime.OnnxTensor;
 import ai.onnxruntime.OrtEnvironment;
 import ai.onnxruntime.OrtException;
 import ai.onnxruntime.OrtSession;
@@ -38,6 +43,27 @@ public abstract class MlModelPipeline {
 		this.blueprint = blueprint;
 	}
 
-	public abstract List<String> predict(List<MedicalRecord> input) throws OrtException;
+	public abstract List<String> predict(List<MlModelInputs> input) throws OrtException;
+
+	public List<String> predict(Map<String, OnnxTensor> inputMap) throws OrtException {
+		// Run the preprocessing model
+		OrtSession.Result preprocessResult = preprocessor.run(inputMap);
+		OnnxTensor preprocessedData = (OnnxTensor) preprocessResult.get(0);
+
+		// === Step 2: Main Model Inference ===
+		Map<String, OnnxTensor> mainInputs = Collections.singletonMap("float_input", preprocessedData);
+		OrtSession.Result mainResult = model.run(mainInputs);
+		OnnxTensor predictionTensor = (OnnxTensor) mainResult.get(0);
+		long[] predictedLabel = (long[]) predictionTensor.getValue();
+
+		// === Step 3: Postprocessing Model ===
+		Map<String, OnnxTensor> postprocessInputs = Collections.singletonMap("predicted_label",
+				OnnxTensor.createTensor(OrtEnvironment.getEnvironment(), predictedLabel));
+		OrtSession.Result postprocessResult = postprocessor.run(postprocessInputs);
+		OnnxTensor recommendationTensor = (OnnxTensor) postprocessResult.get(0);
+		String[] predictions = (String[]) recommendationTensor.getValue();
+
+		return Arrays.asList(predictions).stream().map(String::valueOf).toList();
+	}
 
 }
