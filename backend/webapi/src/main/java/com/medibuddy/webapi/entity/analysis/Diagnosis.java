@@ -9,7 +9,7 @@ import lombok.*;
 import lombok.experimental.*;
 
 @Entity
-@Table(name = "prediction_results")
+@Table(name = "diagnoses")
 @Getter
 @Setter
 @ToString
@@ -18,14 +18,14 @@ import lombok.experimental.*;
 @SuperBuilder
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class PredictionResult extends BaseEntity {
+public class Diagnosis extends BaseEntity {
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "analysis_request_id")
-    private AnalysisRequest analysisRequest;
+    @JoinColumn(name = "analysis_id")
+    private Analysis analysis;
 
-    @Column(name = "disease_probability", nullable = false)
-    private Double diseaseProbability;
+    @Column(name = "ml_model_result", nullable = false)
+    private String mlModelResult;
 
     @Column(name = "predicted_at", nullable = false)
     private Instant predictedAt;

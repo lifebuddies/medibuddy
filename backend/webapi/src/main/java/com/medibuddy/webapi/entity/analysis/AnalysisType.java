@@ -29,7 +29,7 @@ public class AnalysisType extends BaseEntity {
     private String locale;
 
 	@OneToOne(optional = false)
-	@Column(name = "model_id", unique = true)
+	@PrimaryKeyJoinColumn(name = "model_id")
 	private MlModelBlueprint model;
 
 }

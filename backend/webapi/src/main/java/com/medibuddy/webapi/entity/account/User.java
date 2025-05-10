@@ -20,9 +20,9 @@ import lombok.experimental.*;
 @AllArgsConstructor
 @SuperBuilder
 @Accessors(chain = true)
-@EqualsAndHashCode(callSuper = true)
-public class User extends BaseEntity {
+public class User {
 
+    @Id
     @Column(name = "username", length = 50, nullable = false, unique = true)
     private String username;
 
@@ -33,16 +33,16 @@ public class User extends BaseEntity {
     private Boolean enabled;
 
     // email max length: https://datatracker.ietf.org/doc/html/rfc5321#section-4.5.3.1.3
-    @Column(name = "email", length = 256, nullable = false, unique = true)
+    @Column(name = "email", length = 256, nullable = true, unique = true)
     private String email;
 
-    @Column(name = "age", nullable = false)
+    @Column(name = "age", nullable = true)
     private Integer age;
 
-    @Column(name = "registration_verified", nullable = false)
+    @Column(name = "registration_verified", nullable = true)
     private Boolean registrationVerified;
 
-    @Column(name = "registration_date", nullable = false)
+    @Column(name = "registration_date", nullable = true)
     private Instant registrationDate;
 
 }

@@ -10,7 +10,7 @@ import lombok.*;
 import lombok.experimental.*;
 
 @Entity
-@Table(name = "analysis_requests")
+@Table(name = "analyses")
 @Getter
 @Setter
 @ToString
@@ -19,7 +19,7 @@ import lombok.experimental.*;
 @SuperBuilder
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class AnalysisRequest extends BaseEntity {
+public class Analysis extends BaseEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
