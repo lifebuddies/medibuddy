@@ -38,10 +38,6 @@ public class AccountController {
 		return ResponseEntity.ok("Feedback retrieved successfully!");
 	}
 
-	@PostMapping("/newsletter-subscription")
-	public ResponseEntity<?> subscribeToNewsletter(@RequestBody NewsletterSubscriptionRequest subscription) {
-		// TODO: Implement the newsletter subscription logic
-		return ResponseEntity.ok("Subscripted successfully!");
-	}
+
 
 }
