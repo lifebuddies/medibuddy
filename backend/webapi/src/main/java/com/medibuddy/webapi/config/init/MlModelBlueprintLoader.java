@@ -13,7 +13,9 @@ import com.medibuddy.webapi.ai.MlModelPipeline;
 import com.medibuddy.webapi.ai.model.DietRecommendationMlModelPipeline;
 import com.medibuddy.webapi.ai.model.NoOpMlModelPipeline;
 import com.medibuddy.webapi.entity.ai.MlModelBlueprint;
+import com.medibuddy.webapi.entity.analysis.AnalysisType;
 import com.medibuddy.webapi.repository.ai.MlModelRepository;
+import com.medibuddy.webapi.repository.analysis.AnalysisTypeRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,8 +25,15 @@ public class MlModelBlueprintLoader implements ApplicationRunner {
 
 	@Autowired
 	private MlModelRepository mlModelRepository;
+	
+	@Autowired
+	private AnalysisTypeRepository analysisTypeRepository;
 
-	public static Map<String, MlModelPipeline> MODELS;
+	private static Map<String, MlModelPipeline> MODELS;
+
+	public static MlModelPipeline getModel(String modelName) {
+		return MODELS.get(modelName);
+	}
 
 	@Override
     public void run(ApplicationArguments args) throws Exception {
@@ -36,6 +45,11 @@ public class MlModelBlueprintLoader implements ApplicationRunner {
 		}
 		MODELS.put(DietRecommendationMlModelPipeline.MODEL_NAME, new DietRecommendationMlModelPipeline());
 		log.info("Loaded model: " + DietRecommendationMlModelPipeline.MODEL_NAME);
+
+		analysisTypeRepository
+				.saveAndFlush(new AnalysisType(DietRecommendationMlModelPipeline.MODEL_NAME, "Diet Recommendation",
+						"en", mlModelRepository.findByName(DietRecommendationMlModelPipeline.MODEL_NAME).get()));
+		log.info("Loaded analysis type: " + DietRecommendationMlModelPipeline.MODEL_NAME);
 	}
 
 }
