@@ -31,3 +31,14 @@ spring:
           client-id: ${WEB_API_CLIENT_ID:medibuddy-webapi}
           client-secret: ${WEB_API_CLIENT_SECRET:medibuddy-webapi-secret}
           introspection-uri: ${ISSUER_URI:http://localhost:9000}/oauth2/introspect
+
+server:
+  address: ${API_SERVER_ADDRESS:0.0.0.0}
+  port: ${API_SERVER_PORT:8443}
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: medibuddy_pwd
+    key-password: medibuddy_pwd
+    key-alias: medibuddy_cert

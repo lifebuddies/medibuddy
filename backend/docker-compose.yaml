@@ -23,9 +23,9 @@ services:
       - identity
       - postgres
     expose:
-      - 8080
+      - 8443
     ports:
-      - '8080:8080'
+      - '8443:8443'
     working_dir: /medibuddy/webapi
     volumes:
       - ./webapi/target:/medibuddy/webapi

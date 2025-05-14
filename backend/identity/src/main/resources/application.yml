@@ -24,3 +24,10 @@ spring:
 server:
   port: ${AUTHORIZATION_SERVER_PORT}
   address: ${AUTHORIZATION_SERVER_ADDRESS}
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-type: PKCS12
+    key-store-password: medibuddy_pwd
+    key-password: medibuddy_pwd
+    key-alias: medibuddy_cert
