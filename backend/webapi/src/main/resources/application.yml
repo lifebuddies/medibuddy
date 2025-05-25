@@ -42,3 +42,8 @@ server:
     key-store-password: medibuddy_pwd
     key-password: medibuddy_pwd
     key-alias: medibuddy_cert
+  error:
+    include-message: never
+    include-stacktrace: never
+    whitelabel:
+      enabled: false
