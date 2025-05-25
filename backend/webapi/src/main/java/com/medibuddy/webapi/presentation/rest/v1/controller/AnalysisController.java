@@ -1,11 +1,12 @@
 package com.medibuddy.webapi.presentation.rest.v1.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.medibuddy.webapi.presentation.rest.v1.dto.ai.MlModelInputColumnDto;
@@ -41,41 +42,38 @@ public class AnalysisController {
 		return response.toResponseEntity();
 	}
 
-	// @PreAuthorize("hasAuthority('SCOPE_analysis.write')")
-	@PostMapping("/requests")
+	@PreAuthorize("hasAuthority('SCOPE_analysis.write')")
+	@PostMapping("/{typeName}/requests")
 	public ResponseEntity<ApiResponse<DiagnosisResponse>> requestAnalysis(
-			@AuthenticationPrincipal(expression = "attributes['sub']") String username,
+			Principal user,
+			@PathVariable String typeName,
 			@RequestBody AnalysisRequest request) throws OrtException {
-		var result = analysisService.requestAnalysis(username, request);
+		var username = user.getName();
+		var result = analysisService.requestAnalysis(username, typeName, request);
 		var response = ApiResponse.success(result, "Analysis requested successfully!");
 		return response.toResponseEntity();
 	}
 
-	// @PreAuthorize("hasAuthority('SCOPE_analysis.read')")
+	@PreAuthorize("hasAuthority('SCOPE_analysis.read')")
 	@GetMapping("/requests/{requestId}")
 	public ResponseEntity<ApiResponse<AnalysisResponse>> getAnalysisRequestById(
-			@AuthenticationPrincipal(expression = "attributes['sub']") String username,
+			Principal user,
 			@PathVariable UUID requestId) {
+		var username = user.getName();
 		var result = analysisService.getAnalysisRequestById(username, requestId);
 		var response = ApiResponse.success(result, "Analysis request details retrieved successfully!");
 		return response.toResponseEntity();
 	}
 
+	@PreAuthorize("hasAuthority('SCOPE_analysis.read')")
 	@GetMapping("/requests/{requestId}/diagnosis")
 	public ResponseEntity<ApiResponse<DiagnosisResponse>> getDiagnosisByAnalysisId(
-			@AuthenticationPrincipal(expression = "attributes['sub']") String username,
+			Principal user,
 			@PathVariable UUID requestId) {
+		var username = user.getName();
 		var result = analysisService.getDiagnosisByAnalysisId(username, requestId);
 		var response = ApiResponse.success(result, "Diagnosis result retrieved successfully!");
 		return response.toResponseEntity();
 	}
 
 }
-/*
- List<{name, type}> inputs = get("/api/v1/analyses/diet_recommendation/inputs")
-
- build() {
-	
- }
-
- */

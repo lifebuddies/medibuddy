@@ -1,5 +1,6 @@
 package com.medibuddy.webapi.presentation.rest.v1.controller;
 
+import java.security.Principal;
 import java.util.UUID;
 
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import com.medibuddy.webapi.presentation.rest.v1.dto.account.*;
 import com.medibuddy.webapi.service.AccountService;
@@ -32,37 +34,41 @@ public class AccountController {
 		return response.toResponseEntity();
 	}
 
-	// @PreAuthorize("hasAuthority('SCOPE_feedback.write')")
+	@PreAuthorize("hasAuthority('SCOPE_feedback.write')")
 	@PostMapping("/feedback")
 	public ResponseEntity<ApiResponse<UserFeedbackResponse>> submitFeedback(
-			@AuthenticationPrincipal(expression = "attributes['sub']") String username,
+			Principal user,
 			@RequestBody UserFeedbackRequest feedback) {
+		var username = user.getName();
 		var result = accountService.submitFeedback(username, feedback);
 		var response = ApiResponse.success(result, "Feedback submitted successfully!", HttpStatus.CREATED);
 		return response.toResponseEntity();
 	}
 
-	// @PreAuthorize("hasAuthority('SCOPE_feedback.read')")
+	@PreAuthorize("hasAuthority('SCOPE_feedback.read')")
 	@GetMapping("/feedback")
 	public ResponseEntity<PaginatedApiResponse<UserFeedbackResponse>> getAllFeedbacks(
-			@AuthenticationPrincipal(expression = "attributes['sub']") String username,
+			Principal user,
 			Pageable pageable) {
+		var username = user.getName();
 		var result = accountService.getAllFeedbacks(username, pageable);
 		var response = ApiResponse.success(result, "Feedbacks retrieved successfully!");
 		var paginatedReponse = PaginatedApiResponse.of(response);
 		return paginatedReponse.toResponseEntity();
 	}
 
-	// @PreAuthorize("hasAuthority('SCOPE_feedback.read')")
+	@PreAuthorize("hasAuthority('SCOPE_feedback.read')")
 	@GetMapping("/feedback/{feedbackId}")
 	public ResponseEntity<ApiResponse<UserFeedbackResponse>> getFeedbackById(
-			@AuthenticationPrincipal(expression = "attributes['sub']") String username,
+			Principal user,
 			@PathVariable UUID feedbackId) {
+		var username = user.getName();
 		var result = accountService.getFeedbackById(username, feedbackId);
 		var response = ApiResponse.success(result, "Feedback retrieved successfully!");
 		return response.toResponseEntity();
 	}
 
+	@PreAuthorize("hasAuthority('SCOPE_newsletter.subscribe')")
 	@PostMapping("/newsletter-subscription")
 	public ResponseEntity<ApiResponse<NewsletterSubscriptionResponse>> subscribeToNewsletter(
 			@RequestBody NewsletterSubscriptionRequest subscription) {
