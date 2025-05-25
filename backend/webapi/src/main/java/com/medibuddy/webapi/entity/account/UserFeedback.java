@@ -26,6 +26,9 @@ public class UserFeedback extends BaseEntity {
     @Column(name = "type", nullable = false)
     private FeedbackType type;
 
+    @Column(name = "star_count", nullable = false)
+    private int starCount;
+
     @Column(name = "message", length = 500, nullable = false)
     private String message;
 
