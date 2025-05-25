@@ -12,7 +12,7 @@ import com.medibuddy.webapi.entity.analysis.Diagnosis;
 @Repository
 public interface DiagnosisRepository extends JpaRepository<Diagnosis, UUID> {
 
-	@Query("SELECT d FROM Diagnosis d WHERE d.analysisRequest = ?1")
-	Optional<Diagnosis> findByAnalysisRequest(Analysis analysisRequest);
+	@Query("SELECT d FROM Diagnosis d WHERE d.analysis = ?1")
+	Optional<Diagnosis> findByAnalysisRequest(Analysis analysis);
 
 }

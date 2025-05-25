@@ -1,6 +1,7 @@
 package com.medibuddy.webapi.entity.analysis;
 
 import com.medibuddy.webapi.entity.BaseEntity;
+import com.medibuddy.webapi.entity.analysis.Diagnosis.Criticality;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -23,7 +24,8 @@ public class DiseaseAdvice extends BaseEntity {
     private AnalysisType analysisType;
 
     @Column(name = "criticality", nullable = false)
-    private String criticality;
+    @Enumerated(EnumType.STRING)
+    private Criticality criticality;
 
     @Column(name = "message", length = 500, nullable = false)
     private String message;

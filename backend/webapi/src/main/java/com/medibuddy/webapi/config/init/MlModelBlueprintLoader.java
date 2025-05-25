@@ -1,7 +1,6 @@
 package com.medibuddy.webapi.config.init;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Component;
 
 import com.medibuddy.webapi.ai.MlModelPipeline;
 import com.medibuddy.webapi.ai.model.DietRecommendationMlModelPipeline;
-import com.medibuddy.webapi.ai.model.NoOpMlModelPipeline;
-import com.medibuddy.webapi.entity.ai.MlModelBlueprint;
 import com.medibuddy.webapi.entity.analysis.AnalysisType;
 import com.medibuddy.webapi.repository.ai.MlModelRepository;
 import com.medibuddy.webapi.repository.analysis.AnalysisTypeRepository;
@@ -25,7 +22,7 @@ public class MlModelBlueprintLoader implements ApplicationRunner {
 
 	@Autowired
 	private MlModelRepository mlModelRepository;
-	
+
 	@Autowired
 	private AnalysisTypeRepository analysisTypeRepository;
 
@@ -36,20 +33,26 @@ public class MlModelBlueprintLoader implements ApplicationRunner {
 	}
 
 	@Override
-    public void run(ApplicationArguments args) throws Exception {
+	public void run(ApplicationArguments args) throws Exception {
 		MODELS = new HashMap<>();
-		List<MlModelBlueprint> models = mlModelRepository.findAll();
-		for (MlModelBlueprint model : models) {
-			MODELS.put(model.getName(), new NoOpMlModelPipeline(model.getName(), model));
-			log.info("Loaded model: " + model.getName());
-		}
-		MODELS.put(DietRecommendationMlModelPipeline.MODEL_NAME, new DietRecommendationMlModelPipeline());
+		// List<MlModelBlueprint> models = mlModelRepository.findAll();
+		// for (MlModelBlueprint model : models) {
+		// 	MODELS.put(model.getName(), new NoOpMlModelPipeline(model.getName(), model));
+		// 	log.info("Loaded model: " + model.getName());
+		// }
+
+		var dietModel = new DietRecommendationMlModelPipeline();
+		mlModelRepository.saveAndFlush(dietModel.getBlueprint());
+		MODELS.put(DietRecommendationMlModelPipeline.MODEL_NAME, dietModel);
 		log.info("Loaded model: " + DietRecommendationMlModelPipeline.MODEL_NAME);
 
-		analysisTypeRepository
-				.saveAndFlush(new AnalysisType(DietRecommendationMlModelPipeline.MODEL_NAME, "Diet Recommendation",
-						"en", mlModelRepository.findByName(DietRecommendationMlModelPipeline.MODEL_NAME).get()));
-		log.info("Loaded analysis type: " + DietRecommendationMlModelPipeline.MODEL_NAME);
+		for (MlModelPipeline model : MODELS.values()) {
+			var blueprint = model.getBlueprint();
+			var analysisType = new AnalysisType(blueprint.getName(), blueprint.getName(), "en", blueprint);
+			analysisTypeRepository.save(analysisType);
+			log.info("Loaded analysis type: " + blueprint.getName());
+		}
+		analysisTypeRepository.flush();
 	}
 
 }

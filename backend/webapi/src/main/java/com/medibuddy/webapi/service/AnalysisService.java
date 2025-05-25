@@ -7,12 +7,14 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import com.medibuddy.webapi.ai.MlModelInputMapBuilder;
 import com.medibuddy.webapi.config.init.MlModelBlueprintLoader;
 import com.medibuddy.webapi.entity.analysis.Analysis;
 import com.medibuddy.webapi.entity.analysis.AnalysisType;
 import com.medibuddy.webapi.entity.analysis.Diagnosis;
+import com.medibuddy.webapi.entity.analysis.Diagnosis.Criticality;
 import com.medibuddy.webapi.presentation.rest.v1.dto.ai.MlModelInputColumnDto;
 import com.medibuddy.webapi.presentation.rest.v1.dto.analysis.AnalysisRequest;
 import com.medibuddy.webapi.presentation.rest.v1.dto.analysis.AnalysisResponse;
@@ -23,6 +25,7 @@ import com.medibuddy.webapi.entity.ai.MlModelBlueprint;
 
 import ai.onnxruntime.OrtException;
 
+@Validated
 @Transactional
 @Service
 public class AnalysisService {
@@ -39,9 +42,11 @@ public class AnalysisService {
 	@Autowired
 	private AnalysisTypeRepository analysisTypes;
 
-	AnalysisService(DiagnosisRepository diagnosisRepository) {
-		this.diagnosisRepository = diagnosisRepository;
-	}
+	@Autowired
+	private DiseaseAdviceRepository diseaseAdviceRepository;
+
+	@Autowired
+	private MedicalRecordService medicalRecordService;
 
 	public List<String> getAnalysisTypes(Boolean availableOnly) {
 		List<AnalysisType> types = analysisTypes.findAll();
@@ -61,19 +66,33 @@ public class AnalysisService {
 				.toList();
 	}
 
-	public DiagnosisResponse requestAnalysis(String username, AnalysisRequest request) throws OrtException {
-		var analysisType = analysisTypes.findByName(request.analysisType());
+	public DiagnosisResponse requestAnalysis(String username, String requestedAnalysisType, AnalysisRequest request)
+			throws OrtException {
+		var analysisType = analysisTypes.findByName(username);
 		var analysisRequest = Analysis.builder().analysisType(analysisType).requestedAt(Instant.now()).build();
 		analysisRequests.save(analysisRequest);
 
-		var inputColumns = analysisType.getModel().getInputsColumns().stream().map(input -> input.getName()).toList();
-		var records = inputColumns.stream().map(inputColumn -> medicalRecords
-				.findTopByUserAndColumnNameOrderByUpdatedAtDesc(username, inputColumn).get()).toList();
+		medicalRecordService.submitMedicalRecord(username, request.inputs());
+
+		List<String> inputColumns = analysisType.getModel().getInputsColumns().stream().map(model -> model.getName())
+				.toList();
+		var records = inputColumns
+				.stream()
+				.map(inputColumn -> medicalRecords
+						.findTopByUserAndColumnNameOrderByUpdatedAtDesc(username, inputColumn)
+						.get())
+				.toList();
 		var inputMap = MlModelInputMapBuilder.convertMedicalRecordsToSingltonMlModelInputMap(records);
-		var result = MlModelBlueprintLoader.getModel(request.analysisType()).predict(inputMap);
-		var prediction = new Diagnosis(analysisRequest, result.get(0), Instant.now(), false);
+		var result = MlModelBlueprintLoader.getModel(requestedAnalysisType).predict(inputMap).get(0);
+		var prediction = new Diagnosis(analysisRequest, result,
+				Boolean.parseBoolean(result) ? Criticality.HIGH : Criticality.LOW, Instant.now(), false);
 		prediction = diagnosisRepository.save(prediction);
-		return new DiagnosisResponse(prediction.getId(), prediction.getMlModelResult());
+
+		var advices = diseaseAdviceRepository
+				.findByCriticalityAndAnalysisType(prediction.getCriticality(), analysisType).stream()
+				.map(advice -> advice.getMessage())
+				.toList();
+		return new DiagnosisResponse(prediction.getId(), prediction.getMlModelResult(), advices);
 	}
 
 	public AnalysisResponse getAnalysisRequestById(String username, UUID requestId) {
@@ -83,8 +102,13 @@ public class AnalysisService {
 
 	public DiagnosisResponse getDiagnosisByAnalysisId(String username, UUID requestId) {
 		var analysisRequest = analysisRequests.findById(requestId);
-		var diagnosis = diagnosisRepository.findByAnalysisRequest(analysisRequest.get());
-		return new DiagnosisResponse(diagnosis.get().getId(), diagnosis.get().getMlModelResult());
+		var diagnosis = diagnosisRepository.findByAnalysisRequest(analysisRequest.get()).get();
+		var advices = diseaseAdviceRepository
+				.findByCriticalityAndAnalysisType(diagnosis.getCriticality(), diagnosis.getAnalysis().getAnalysisType())
+				.stream()
+				.map(advice -> advice.getMessage())
+				.toList();
+		return new DiagnosisResponse(diagnosis.getId(), diagnosis.getMlModelResult(), advices);
 	}
 
 }

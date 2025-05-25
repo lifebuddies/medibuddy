@@ -27,10 +27,20 @@ public class Diagnosis extends BaseEntity {
     @Column(name = "ml_model_result", nullable = false)
     private String mlModelResult;
 
+    @Column(name = "criticality", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Criticality criticality;
+
     @Column(name = "predicted_at", nullable = false)
     private Instant predictedAt;
 
     @Column(name = "notified", nullable = false)
     private Boolean notified;
+
+    public enum Criticality {
+        LOW,
+        MEDIUM,
+        HIGH
+    }
 
 }

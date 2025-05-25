@@ -1,9 +1,11 @@
 package com.medibuddy.webapi.presentation.rest.v1.dto.analysis;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.List;
+
+import com.medibuddy.webapi.presentation.rest.v1.dto.record.MedicalRecordFieldModificationRequest;
 
 public record AnalysisRequest(
-	@NotBlank String analysisType
+	List<MedicalRecordFieldModificationRequest> inputs
 )  {
 
 }

@@ -23,6 +23,7 @@ public abstract class MlModelPipeline {
 	protected final OrtSession model;
 	protected final OrtSession postprocessor;
 
+	@Getter
 	protected final MlModelBlueprint blueprint;
 
 	public MlModelPipeline(String modelName, MlModelBlueprint blueprint) throws OrtException, IOException {
